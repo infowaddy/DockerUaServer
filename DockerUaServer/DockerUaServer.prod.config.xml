@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationConfiguration
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ua="http://opcfoundation.org/UA/2008/02/Types.xsd"
+  xmlns="http://opcfoundation.org/UA/SDK/Configuration.xsd">
+
+	<ApplicationName>Docker UA Server</ApplicationName>
+	<ManufacturerName>Zin Min</ManufacturerName>
+	<ProductName>Docker UA Server</ProductName>
+	<ApplicationUri>urn:localhost:Docker:UAServer</ApplicationUri>
+	<ProductUri>http://zinminhtay.medium.com</ProductUri>
+	<ApplicationType>Server_0</ApplicationType>
+
+	<Namespaces></Namespaces>
+	<!-- Configure security settings -->
+	<SecurityConfiguration>
+		<!-- Where the application instance certificate is stored (MachineDefault) -->
+		<ApplicationCertificate>
+			<StoreType>Directory</StoreType>
+			<StorePath>/app/pki/own</StorePath>
+			<SubjectName>CN=Docker.UAServer</SubjectName>
+		</ApplicationCertificate>
+
+		<!-- Where the issuer certificate are stored (certificate authorities) -->
+		<TrustedIssuerCertificates>
+			<StoreType>Directory</StoreType>
+			<StorePath>/app/pki/TrustedIssuer</StorePath>
+		</TrustedIssuerCertificates>
+
+		<!-- Where the trust list is stored (UA Applications) -->
+		<TrustedPeerCertificates>
+			<StoreType>Directory</StoreType>
+			<StorePath>/app/pki/TrustedPeer</StorePath>
+		</TrustedPeerCertificates>
+
+		<!-- The directory used to store invalid certficates for later review by the administrator. -->
+		<RejectedCertificateStore>
+			<StoreType>Directory</StoreType>
+			<StorePath>/app/pki/RejectedCertificates</StorePath>
+		</RejectedCertificateStore>
+
+		<!-- Where the User issuer certificates are stored -->
+		<UserIssuerCertificates>
+			<StoreType>Directory</StoreType>
+			<StorePath>/app/pki/IssuerUser</StorePath>
+		</UserIssuerCertificates>
+
+		<!-- Where the User trust list is stored-->
+		<TrustedUserCertificates>
+			<StoreType>Directory</StoreType>
+			<StorePath>/app/pki/TrustedUser</StorePath>
+		</TrustedUserCertificates>
+
+		<!-- WARNING: The following setting (to automatically accept untrusted certificates) should be used
+		for easy debugging purposes ONLY and turned off for production deployments! -->
+		<AutoAcceptUntrustedCertificates>false</AutoAcceptUntrustedCertificates>
+
+		<!-- WARNING: SHA1 signed certficates are by default rejected and should be phased out. 
+		The setting below to allow them is only required for UACTT (1.02.336.244) which uses SHA-1 signed certs. -->
+		<RejectSHA1SignedCertificates>true</RejectSHA1SignedCertificates>
+		<suppressNonceValidationErrors>false</suppressNonceValidationErrors>
+		<suppressCertificateValidationErrors>false</suppressCertificateValidationErrors>
+		<RejectUnknownRevocationStatus>true</RejectUnknownRevocationStatus>
+		<MinimumCertificateKeySize>2048</MinimumCertificateKeySize>
+		<AddAppCertToTrustedStore>false</AddAppCertToTrustedStore>
+		<SendCertificateChain>true</SendCertificateChain>
+	</SecurityConfiguration>
+
+	<TransportConfigurations></TransportConfigurations>
+
+	<TransportQuotas>
+		<OperationTimeout>600000</OperationTimeout>
+		<MaxStringLength>1048576</MaxStringLength>
+		<MaxByteStringLength>1048576</MaxByteStringLength>
+		<MaxArrayLength>65535</MaxArrayLength>
+		<MaxMessageSize>4194304</MaxMessageSize>
+		<MaxBufferSize>65535</MaxBufferSize>
+		<ChannelLifetime>300000</ChannelLifetime>
+		<SecurityTokenLifetime>3600000</SecurityTokenLifetime>
+	</TransportQuotas>
+
+	<!-- Configure server endpoints -->
+	<ServerConfiguration>
+		<RegisterServer>false</RegisterServer>
+		<BaseAddresses>
+			<ua:String>https://wsl.ubuntu:7274/DockerUAServer</ua:String>
+			<ua:String>opc.tcp://wsl.ubuntu:7274/DockerUAServer</ua:String>
+		</BaseAddresses>
+		<SecurityPolicies>
+			<!--<ServerSecurityPolicy>
+				<SecurityMode>None_1</SecurityMode>
+				<SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
+				<SecurityLevel>0</SecurityLevel>
+			</ServerSecurityPolicy>-->
+			<ServerSecurityPolicy>
+				<SecurityMode>Sign_2</SecurityMode>
+				<SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256</SecurityPolicyUri>
+				<SecurityLevel>1</SecurityLevel>
+			</ServerSecurityPolicy>
+			<ServerSecurityPolicy>
+				<SecurityMode>SignAndEncrypt_3</SecurityMode>
+				<SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256</SecurityPolicyUri>
+				<SecurityLevel>5</SecurityLevel>
+			</ServerSecurityPolicy>
+		</SecurityPolicies>
+		<UserTokenPolicies>
+			<!--<ua:UserTokenPolicy>
+				<ua:TokenType>Anonymous_0</ua:TokenType>
+				<ua:SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</ua:SecurityPolicyUri>
+			</ua:UserTokenPolicy>-->
+			<ua:UserTokenPolicy>
+				<ua:TokenType>UserName_1</ua:TokenType>
+			</ua:UserTokenPolicy>
+			<ua:UserTokenPolicy>
+				<ua:PolicyId>Basic256Sha256</ua:PolicyId>
+				<ua:TokenType>Certificate_2</ua:TokenType>
+				<!-- certificate possession must be proven with a digital signature - this specifies what algorithm to use -->
+				<ua:SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256</ua:SecurityPolicyUri>
+			</ua:UserTokenPolicy>
+			<!--
+			  <ua:UserTokenPolicy>
+				<ua:TokenType>IssuedToken_3</ua:TokenType>
+				<ua:IssuedTokenType>urn:oasis:names:tc:SAML:1.0:assertion:Assertion</ua:IssuedTokenType>
+			  </ua:UserTokenPolicy>
+			 -->
+		</UserTokenPolicies>
+		<DiagnosticsEnabled>true</DiagnosticsEnabled>
+		<EnableAuditEvents>true</EnableAuditEvents>
+		<EnableDiagnostics>true</EnableDiagnostics>
+		<MaxSessionCount>100</MaxSessionCount>
+		<MinSessionTimeout>10000</MinSessionTimeout>
+		<MaxSessionTimeout>3600000</MaxSessionTimeout>
+		<MaxBrowseContinuationPoints>10</MaxBrowseContinuationPoints>
+		<MaxQueryContinuationPoints>10</MaxQueryContinuationPoints>
+		<MaxHistoryContinuationPoints>100</MaxHistoryContinuationPoints>
+		<MaxRequestAge>600000</MaxRequestAge>
+		<MinPublishingInterval>100</MinPublishingInterval>
+		<MaxPublishingInterval>3600000</MaxPublishingInterval>
+		<PublishingResolution>50</PublishingResolution>
+		<MaxSubscriptionLifetime>3600000</MaxSubscriptionLifetime>
+		<MaxMessageQueueSize>10</MaxMessageQueueSize>
+		<MaxNotificationQueueSize>100</MaxNotificationQueueSize>
+		<MaxNotificationsPerPublish>1000</MaxNotificationsPerPublish>
+		<MinMetadataSamplingInterval>1000</MinMetadataSamplingInterval>
+		<MaxRegistrationInterval>0</MaxRegistrationInterval>
+	</ServerConfiguration>
+	<MinRequestThreadCount>5</MinRequestThreadCount>
+	<MaxRequestThreadCount>100</MaxRequestThreadCount>
+	<MaxQueuedRequestCount>2000</MaxQueuedRequestCount>
+	<TraceConfiguration>
+		<OutputFilePath>.\\Logs\\DockerUaServer.TraceLog.txt</OutputFilePath>
+		<DeleteOnLoad>true</DeleteOnLoad>
+		<!-- 511 for server side all logs, 1023 for server side and client side all logs-->
+		<TraceMasks>1023</TraceMasks>
+	</TraceConfiguration>
+</ApplicationConfiguration>
