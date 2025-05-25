@@ -62,7 +62,7 @@
 		<suppressCertificateValidationErrors>false</suppressCertificateValidationErrors>
 		<RejectUnknownRevocationStatus>true</RejectUnknownRevocationStatus>
 		<MinimumCertificateKeySize>2048</MinimumCertificateKeySize>
-		<AddAppCertToTrustedStore>false</AddAppCertToTrustedStore>
+		<AddAppCertToTrustedStore>true</AddAppCertToTrustedStore>
 		<SendCertificateChain>true</SendCertificateChain>
 	</SecurityConfiguration>
 
@@ -83,7 +83,7 @@
 	<ServerConfiguration>
 		<RegisterServer>false</RegisterServer>
 		<BaseAddresses>
-			<ua:String>https://localhost:7274/DockerUAServer</ua:String>
+			<ua:String>https://localhost:7273/DockerUAServer</ua:String>
 			<ua:String>opc.tcp://localhost:7274/DockerUAServer</ua:String>
 		</BaseAddresses>
 		<SecurityPolicies>

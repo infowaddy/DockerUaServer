@@ -62,7 +62,7 @@
 		<suppressCertificateValidationErrors>false</suppressCertificateValidationErrors>
 		<RejectUnknownRevocationStatus>true</RejectUnknownRevocationStatus>
 		<MinimumCertificateKeySize>2048</MinimumCertificateKeySize>
-		<AddAppCertToTrustedStore>false</AddAppCertToTrustedStore>
+		<AddAppCertToTrustedStore>true</AddAppCertToTrustedStore>
 		<SendCertificateChain>true</SendCertificateChain>
 	</SecurityConfiguration>
 
@@ -83,8 +83,8 @@
 	<ServerConfiguration>
 		<RegisterServer>false</RegisterServer>
 		<BaseAddresses>
-			<ua:String>https://wsl.ubuntu:7274/DockerUAServer</ua:String>
-			<ua:String>opc.tcp://wsl.ubuntu:7274/DockerUAServer</ua:String>
+			<ua:String>https://ubuntu.local:7273/DockerUAServer</ua:String>
+			<ua:String>opc.tcp://ubuntu.local:7274/DockerUAServer</ua:String>
 		</BaseAddresses>
 		<SecurityPolicies>
 			<!--<ServerSecurityPolicy>
@@ -148,7 +148,7 @@
 	<MaxRequestThreadCount>100</MaxRequestThreadCount>
 	<MaxQueuedRequestCount>2000</MaxQueuedRequestCount>
 	<TraceConfiguration>
-		<OutputFilePath>.\\Logs\\DockerUaServer.TraceLog.txt</OutputFilePath>
+		<OutputFilePath>/app/logs/DockerUaServer.TraceLog.txt</OutputFilePath>
 		<DeleteOnLoad>true</DeleteOnLoad>
 		<!-- 511 for server side all logs, 1023 for server side and client side all logs-->
 		<TraceMasks>1023</TraceMasks>

@@ -23,8 +23,8 @@ namespace DockerUaServer
         DockerUaServerSettings dockerUaServerSettings;
         private ICertificateValidator? m_userCertificateValidator ;
         public DockerUaServer(ILogger<DockerUaServer> _logger, IOptions<DockerUaServerSettings> _settingOption) { 
-            logger = _logger;
-            dockerUaServerSettings = _settingOption.Value;
+            this.logger = _logger;
+            this.dockerUaServerSettings = _settingOption.Value;
         }
 
         public async Task Start(CancellationToken cancellationToken)
@@ -152,7 +152,7 @@ namespace DockerUaServer
 
 
                 // Example: Use Subject string to determine user role
-                // TODO: Needot implement with your certificate policy and subject
+                // TODO: Implement according to your certificate policy and subject rules
                 if (cnValue!.ToLower().Contains("adminuser"))
                 {
                     IUserIdentity adminIdentity = new UserIdentity(x509IdentityToken);

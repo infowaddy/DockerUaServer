@@ -51,7 +51,9 @@ echo '==> Building Docker image...'
 docker build -f DockerUaServer/Dockerfile -t $dockerImageName .
 
 # Run the container
-docker run -d --name $dockerContainerName -p 7274:7274 -v $remoteDir/DockerUaServer/DockerUaServer.prod.config.xml:/app/DockerUaServer.config.xml $dockerImageName
+docker run -d --name $dockerContainerName -p 7273:7273  -p 7274:7274 \
+-v ~/opc-ua-pki:/app/pki \
+-v $remoteDir/DockerUaServer/DockerUaServer.prod.config.xml:/app/DockerUaServer.config.xml $dockerImageName
 
 echo '==> Deployment complete!'
 "@
